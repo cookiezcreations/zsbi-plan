@@ -7,45 +7,46 @@
 <meta name="author" content="pawel10973 oraz Ciastkus_Maximus">
 <title>Plan i zastępstwa ZSBI</title>
 <style>
-	*{
-		margin: 0px;
-		padding: 0px;
-		overflow: hidden;
-	}
-	#main_wrapper{
-		position:relative;
-		display:block;
-		width:100vw;
-		height:100vh;
-	}
-	#left_wrapper{
-		background-color: yellow;
-		position:relative;
-		float:left;
-		width:60vw;
-		height:100%;
-	}
-	#middle_bar{
-		position: absolute;
-		background-color: #606060;
-		height: 100vh;
-		width: 7px;
-		margin-left: 60vw;
-		z-index: 666;
-	}
-	#right_wrapper{
-		background-color: white; 
-		position:relative;
-		float:left;
-		width:40vw;
-		height:100%;
-	}
-	#my_iframe{
-		width: 100%;
-		height: 100%;
-		border: 0px;
-		overflow: auto;
-	}
+body,html{
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	width:100%;
+	height:100%;
+}
+#right_content{
+   background-color: #FFFFFF;
+   float: right;
+   position: absolute;
+   height: 100%;
+   right: 0;
+   left:60%;
+}
+#left_content{
+   background-color: #FFFFFF;
+   width:60%;
+   float: left;
+   position: absolute;
+   overflow-y: hidden;
+   height: 100%;
+}
+
+#dragbar{
+   background-color: #000000;
+   height:100%;
+   float: right;
+   width: 3px;
+   cursor: col-resize;
+   z-index: 666;
+   position:relative;
+}
+.my_iframe{
+	position:absolute;
+	width: 100%;
+	height: 100%;
+	border: 0px;
+	overflow: auto;
+}
 </style>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -55,18 +56,54 @@
 
   ga('create', 'UA-68963054-1', 'auto');
   ga('send', 'pageview');
-
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+var maxx = 0.8;
+var minx = 0.2;
+$(document).ready(function() {
+   $('#dragbar').mousedown(function(e){
+        e.preventDefault();
+        $(document).mousemove(function(e){
+		var x = e.pageX;
+		if($('#dragbar').position().left > ($(window).width() * maxx)) {
+			if(x > $('#dragbar').position().left) {
+				return;
+			}
+		}
+		else if($('#dragbar').position().left < ($(window).width() * minx)) {
+			if(x < $('#dragbar').position().left) {
+				return;
+			}
+		}
+          $('#left_content').css("width",x+2);
+          $('#right_content').css("left",x+2);
+		  $('.my_iframe').css("pointer-events", "none");
+       })
+    });
+   $(document).mouseup(function(e){
+       $(document).unbind('mousemove');
+	   $('.my_iframe').css("pointer-events", "auto");
+       });
+});
 </script>
 </head>
 <body>
-<div id="main_wrapper">
-	<div id="middle_bar"></div>
+<!-- <div id="main_wrapper">
 	<div id="left_wrapper">
-		<iframe id="my_iframe" src="http://zsbi.pl/autoinstalator/wordpress/wp-includes/plan/index.html"></iframe>
+		<iframe class="my_iframe" src="http://zsbi.pl/autoinstalator/wordpress/wp-includes/plan/index.html"></iframe>
+		<div id="middle_bar"></div>
 	</div>
 	<div id="right_wrapper">
-		<iframe id="my_iframe" src="http://www.zsbi.internetdsl.pl/zsbijoomla/zastepstwa/zmiany.html" seamless></iframe>
+		<iframe class="my_iframe" src="http://www.zsbi.internetdsl.pl/zsbijoomla/zastepstwa/zmiany.html"></iframe>
 	</div>
+</div> -->
+<div id="left_content">
+	<iframe class="my_iframe" src="http://zsbi.pl/autoinstalator/wordpress/wp-includes/plan/index.html"></iframe>
+    <div id="dragbar"></div>
+</div>
+<div id="right_content">
+    <iframe id="framezm" class="my_iframe" src="http://www.zsbi.internetdsl.pl/zsbijoomla/zastepstwa/zmiany.html"></iframe>
 </div>
 </body>
 </html>

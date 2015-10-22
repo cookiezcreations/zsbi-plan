@@ -66,7 +66,7 @@ body,html{
 <script>
 var maxx = 0.8;
 var minx = 0.2;
-$(document).ready(function() {
+$(window).ready(function() {
    $('#dragbar').mousedown(function(e){
         e.preventDefault();
 		$('.my_iframe').css("pointer-events", "none");
@@ -96,24 +96,26 @@ $(document).ready(function() {
 		$('#left_content').css("width", $('#left_content').width() + resizeValue);
         $('#right_content').css("left", $('#right_content').position().left + resizeValue);
 	});
+	
+	function getParameterByName(name) {
+		var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+		return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+	}
+	
+	var oddzial = getParameterByName('oddzial');
+	if(oddzial) {
+		$('#planframe').attr("src", "http://zsbi.pl/autoinstalator/wordpress/wp-includes/plan/plany/o" + oddzial + ".html");
+	}
+	
 });
 </script>
 </head>
 <body>
-<!-- <div id="main_wrapper">
-	<div id="left_wrapper">
-		<iframe class="my_iframe" src="http://zsbi.pl/autoinstalator/wordpress/wp-includes/plan/index.html"></iframe>
-		<div id="middle_bar"></div>
-	</div>
-	<div id="right_wrapper">
-		<iframe class="my_iframe" src="http://www.zsbi.internetdsl.pl/zsbijoomla/zastepstwa/zmiany.html"></iframe>
-	</div>
-</div> -->
 <div id="left_content">
-	<iframe class="my_iframe" src="http://zsbi.pl/autoinstalator/wordpress/wp-includes/plan/index.html"></iframe>
+	<iframe id="planframe" class="my_iframe" src="http://zsbi.pl/autoinstalator/wordpress/wp-includes/plan/index.html"></iframe>
 </div>
 <div id="right_content">
-    <iframe id="framezm" class="my_iframe" src="http://www.zsbi.internetdsl.pl/zsbijoomla/zastepstwa/zmiany.html"></iframe>
+    <iframe class="my_iframe" src="http://www.zsbi.internetdsl.pl/zsbijoomla/zastepstwa/zmiany.html"></iframe>
 	<div id="dragbar"></div>
 </div>
 </body>
